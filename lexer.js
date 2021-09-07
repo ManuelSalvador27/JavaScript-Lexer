@@ -1,4 +1,8 @@
-const input = "7 + 8";
+import { readFileSync } from "fs";
+const fileName = "./test.js";
+
+const input = String(readFileSync(fileName));
+console.log("nuestro puto texto", input);
 
 function isNumeric(c) {
   return /^\d+$/.test(c);
@@ -15,6 +19,10 @@ function* lexer(str) {
     cursor++;
     chr = str[cursor];
     column++;
+  }
+  function newLine() {
+    line++;
+    column = 1;
   }
   function number() {
     let buffer = "";
@@ -38,26 +46,51 @@ function* lexer(str) {
     }
     return null;
   }
+  function eol() {
+    //es un whiteSpace?
+    if (chr === "\n") {
+      next();
+      newLine();
+    } else {
+      //sino es     return null;
+    }
+
+    while (chr === "\n") {
+      next();
+      newLine();
+    }
+
+    return true;
+  }
+
   function whiteSpace() {
-    let buffer = "";
-    while (chr === " " || chr === "\t" || chr === "\n") {
+    //es un whiteSpace?
+    if (chr === " " || chr === "\t") {
+    } else {
+      //sino es
+      return null;
+    }
+
+    while (chr === " " || chr === "\t") {
       next();
     }
 
-    return null;
+    return true;
   }
 
   //version corta de while(true) que no requiere optimización
   for (;;) {
-    whiteSpace();
-    const token = number() || eof();
+    const token = whiteSpace() || number() || eol() || eof();
     if (token) {
+      if (token === true) {
+        continue;
+      }
       yield token;
       if (token.type === "EOF") {
         break;
       }
     } else {
-      throw new SyntaxError(`Caracter no reconocido : "${chr}" at ${cursor + 1}`);
+      throw new SyntaxError(`Caracter no reconocido : "${chr}" at ${fileName} ${line} : ${column}`);
     }
   }
 }

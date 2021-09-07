@@ -1,0 +1,24 @@
+{
+  "name": "javascript-lexer",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Manuel Salvador Morales Salgado - Matricula: A01422267\r José Antonio Lome Paulino - Matricula: A01422195",
+  "main": "lexer.js",
+  "dependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManuelSalvador27/JavaScript-Lexer.git"
+  },
+  "author": "Manuel Morales y José Antonio Lome",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ManuelSalvador27/JavaScript-Lexer/issues"
+  },
+  "homepage": "https://github.com/ManuelSalvador27/JavaScript-Lexer#readme"
+}
