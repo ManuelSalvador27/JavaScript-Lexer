@@ -31,20 +31,30 @@ function* lexer(str) {
       next();
     }
     if (buffer.length >= 1) {
-      return { type: "number", buffer };
-    }
-    return null;
-  }
-
-  function eof() {
-    chr = str[cursor];
-    if (chr === undefined) {
-      cursor++;
-      return {
-        type: "EOF",
+      return { 
+        type: "number", 
+        value: Number(buffer) 
       };
     }
     return null;
+  }
+  function isWhiteSpace(c){
+    return c === " " || c === "\t";
+  }
+  function whiteSpace() {
+    //es un whiteSpace?
+    if (isWhiteSpace(chr)) {
+      next();
+    } else {
+      //sino es
+      return null;
+    }
+
+    while (isWhiteSpace(chr)) {
+      next();
+    }
+
+    return true;
   }
   function eol() {
     //es un whiteSpace?
@@ -52,7 +62,8 @@ function* lexer(str) {
       next();
       newLine();
     } else {
-      //sino es     return null;
+      //sino es
+      return null;
     }
 
     while (chr === "\n") {
@@ -62,21 +73,15 @@ function* lexer(str) {
 
     return true;
   }
-
-  function whiteSpace() {
-    //es un whiteSpace?
-    if (chr === " " || chr === "\t") {
-    } else {
-      //sino es
-      return null;
+  function eof() {
+    if (chr === undefined) {
+      return {
+        type: "EOF",
+      };
     }
-
-    while (chr === " " || chr === "\t") {
-      next();
-    }
-
-    return true;
+    return null;
   }
+
 
   //version corta de while(true) que no requiere optimización
   for (;;) {
