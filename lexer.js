@@ -1,6 +1,12 @@
-const input = "77 7   8 2 1 232 ";
+const input = "7 + 8";
+
+function isNumeric(c) {
+  return /^\d+$/.test(c);
+}
 
 function* lexer(str) {
+  let line = 1;
+  let column = 1;
   let cursor = 0;
   let chr = str[cursor];
 
@@ -8,10 +14,11 @@ function* lexer(str) {
   function next() {
     cursor++;
     chr = str[cursor];
+    column++;
   }
   function number() {
     let buffer = "";
-    while (/^\d+$/.test(chr)) {
+    while (isNumeric(chr)) {
       buffer += chr;
       next();
     }
@@ -20,6 +27,7 @@ function* lexer(str) {
     }
     return null;
   }
+
   function eof() {
     chr = str[cursor];
     if (chr === undefined) {
@@ -32,7 +40,7 @@ function* lexer(str) {
   }
   function whiteSpace() {
     let buffer = "";
-    while (chr === " " || chr === "\t") {
+    while (chr === " " || chr === "\t" || chr === "\n") {
       next();
     }
 
