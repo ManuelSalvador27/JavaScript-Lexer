@@ -3,6 +3,8 @@ import { readFileSync } from "fs";
 const filename = "./test.js"
 const input = String(readFileSync(filename))
 
+/*const input= `123
+4`;*/
 function isNumeric(c) {
   return /^\d+$/.test(c);
 }
@@ -19,7 +21,7 @@ function* lexer(str) {
     column++;
   }
 
-  function newline() {
+  function newLine() {
     line++;
     column = 1;
   }
@@ -48,14 +50,15 @@ function* lexer(str) {
   }
   function eol() {
     //es un whiteSpace?
-    if (chr === "\n") {
+    if (chr === "\n"|| chr === "\r" ) {
       next();
       newLine();
     } else {
-      //sino es     return null;
+      //sino es     
+      return null;
     }
 
-    while (chr === "\n") {
+    while (chr === "\n"|| chr === "\r") {
       next();
       newLine();
     }
@@ -66,6 +69,7 @@ function* lexer(str) {
   function whiteSpace() {
     //es un whiteSpace?
     if (chr === " " || chr === "\t") {
+      next();
     } else {
       return null
     }
