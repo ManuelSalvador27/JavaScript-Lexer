@@ -1,15 +1,13 @@
-import { readFileSync } from "fs";
+/*
+BEFORE: Input of code like a string
+const input= `1234`;
+*/ 
 
-const filename = "./test.js"
-const input = String(readFileSync(filename))
-
-/*const input= `123
-4`;*/
 function isNumeric(c) {
   return /^\d+$/.test(c);
 }
 
-function* lexer(str) {
+export function* lexer(filename, str) {
   let line = 1
   let column = 1
   let cursor = 0
@@ -33,6 +31,13 @@ function* lexer(str) {
       next()
     }
     if (buffer.length >= 1) {
+      return { type: "number", buffer };
+    }
+    return null
+  }
+
+  function operator() {
+    if (chr === '+') {
       return { type: "number", buffer };
     }
     return null
@@ -103,10 +108,3 @@ function* lexer(str) {
     }
   }
 }
-
-
-console.log("Inicio");
-for (const token of lexer(input)) {
-  console.log(token);
-}
-console.log("Final");
