@@ -31,58 +31,50 @@ function* lexer(str) {
       next()
     }
     if (buffer.length >= 1) {
-      return { 
-        type: "number", 
-        value: Number(buffer) 
-      };
+      return { type: "number", buffer };
     }
     return null
   }
 
-  function isWhiteSpace(c){
-    return c === ' ' || c === '\t'
-  }
-
-  function whiteSpace() {
-    //es un whiteSpace?
-    if (isWhiteSpace(chr)) {
-      next()
-    } else {
-      //sino es
-      return null
-    }
-
-    while (isWhiteSpace(chr)) {
-      next()
-    }
-
-    return true
-  }
-
-  function eol() {
-    console.log("test",chr)
-    if (chr === '\n'.charCodeAt()) {
-      next()
-      newline()
-    } else {
-      return null
-    }
-
-    while (chr === '\n'.charCodeAt()) {
-      next()
-      newline()
-    }
-
-    return true
-  }
-
   function eof() {
+    chr = str[cursor];
     if (chr === undefined) {
+      cursor++;
       return {
         type: "EOF",
       };
     }
     return null;
+  }
+  function eol() {
+    //es un whiteSpace?
+    if (chr === "\n") {
+      next();
+      newLine();
+    } else {
+      //sino es     return null;
+    }
+
+    while (chr === "\n") {
+      next();
+      newLine();
+    }
+
+    return true
+  }
+
+  function whiteSpace() {
+    //es un whiteSpace?
+    if (chr === " " || chr === "\t") {
+    } else {
+      return null
+    }
+
+    while (chr === " " || chr === "\t") {
+      next();
+    }
+
+    return true
   }
 
   //version corta de while(true) que no requiere optimización
