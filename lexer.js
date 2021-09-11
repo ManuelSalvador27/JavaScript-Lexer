@@ -31,14 +31,15 @@ export function* lexer(filename, str) {
       next()
     }
     if (buffer.length >= 1) {
-      return { type: "number", buffer };
+      return { type: "Numeric", buffer };
     }
     return null
   }
 
   function operator() {
     if (chr === '+') {
-      return { type: "number", buffer };
+      next()
+      return { type: "PlusToken" };
     }
     return null
   }
@@ -47,9 +48,7 @@ export function* lexer(filename, str) {
     chr = str[cursor];
     if (chr === undefined) {
       cursor++;
-      return {
-        type: "EOF",
-      };
+      return { type: "EOF" }
     }
     return null;
   }
@@ -88,7 +87,7 @@ export function* lexer(filename, str) {
 
   //version corta de while(true) que no requiere optimización
   for (;;) {
-    const token = whiteSpace() || number() || eol() || eof()
+    const token = whiteSpace() || operator() || number() || eol()
 
     if (token) {
       if (token === true) {
@@ -97,14 +96,17 @@ export function* lexer(filename, str) {
 
       yield token;
 
-      if (token.type === "EOF") {
-        break;
-      }
-    } else {
-      console.log("error", chr)
-      throw new SyntaxError(
-        `Caracter no reconocido"${chr}" en ${filename}: ${line}:${column}`
-      );
+      continue;
+    } 
+
+    const EndOfFile = eof()
+    if(EndOfFile){
+      break;
     }
+
+    throw new SyntaxError(
+      `Caracter no reconocido"${chr}" en ${filename}: ${line}:${column}`
+    );
+
   }
 }
