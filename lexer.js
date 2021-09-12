@@ -48,7 +48,7 @@ export function* lexer(filename, str) {
     chr = str[cursor];
     if (chr === undefined) {
       cursor++;
-      return { type: "EOF" }
+      return {type: "EOF" }
     }
     return null;
   }
