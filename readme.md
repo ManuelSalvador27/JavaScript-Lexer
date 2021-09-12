@@ -14,19 +14,18 @@ Grámatica de Javascript:
   - case
   - catch
   - class
-  - const
   - continue
   - debugger
   - default
   - delete
   - do
-  - else
+  - //else
   - export
   - extends
   - finally
   - for
-  - function
-  - if
+  - //function
+  - //if  
   - import
   - in
   - instanceof
@@ -44,12 +43,7 @@ Grámatica de Javascript:
   - with (en-US)
   - yield
   - let
-  - const
-  - var
-  - return
-  - break
-  - import
-  - export
+
 *No incluye las futuras palabras reservadas*
 - Identificador especiales 
   - arguments
