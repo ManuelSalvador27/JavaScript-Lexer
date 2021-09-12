@@ -1,10 +1,9 @@
-/*
-BEFORE: Input of code like a string
-const input= `1234`;
-*/ 
-
 function isNumeric(c) {
   return /^\d+$/.test(c);
+}
+
+function isAlpha(c) {
+  return /^[A-Za-z]+$/.test(c);
 }
 
 export function* lexer(filename, str) {
@@ -105,7 +104,7 @@ export function* lexer(filename, str) {
     }
 
     throw new SyntaxError(
-      `Caracter no reconocido"${chr}" en ${filename}: ${line}:${column}`
+      `Caracter no reconocido "${chr}" en ${filename}: ${line}:${column}`
     );
 
   }
