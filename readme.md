@@ -4,11 +4,11 @@ José Antonio Lome Paulino - Matricula: A01422195
 Este proyecto esta hecho en node.js v14.17.0 sin dependencias externas
 
 Grámatica de Javascript:
-- Comentarios
+- Comentarios /*TODO*/
   - / Hola /
-  - /* Esta es un comentario largo */
-- Comentarios hashbang
-  - #!/usr/bin/env node
+  - /* Esta es un comentario largo */ 
+- Comentarios hashbang /*TODO*/
+  - #!/usr/bin/env node 
 - Palabras reservadas
   - break
   - case
@@ -43,13 +43,12 @@ Grámatica de Javascript:
   - with (en-US)
   - yield
   - let
-
 *No incluye las futuras palabras reservadas*
-- Identificador especiales 
-  - arguments
-  - get
+- Identificador especiales /*TODO*/
+  - arguments 
+  - get 
   - set
-- Literales
+- Literales /*TODO*/
   - null 
   - true
   - false
@@ -58,21 +57,26 @@ Grámatica de Javascript:
   - Binarios (Ej: 0b10000000000000000000000000000000; // 2147483648)
   - Octal (Ej: 0o755; // 493)
   - Hexadecimales (Ej: 0xA)
-- Objetos literales 
+- Objetos literales /*TODO*/
   - var o = 'foo';
   - var o = {a, b, c};
-- Arreglos literales 
+- Arreglos literales /*TODO*/
   - [1954, 1974, 1990, 2014]
-- Cadenas literales 
+- Cadenas literales /*TODO*/
   - 'foo'
   - "bar"
-- Expresiones regulares
+- Expresiones regulares /*TODO*/
   - /ab+c/g
 - Punto y coma 
   - Opcional
   - Existente
-##CHANGELOG
+- Parentesis /*TODO*/
+  - Curly braces
+  - Parentesis
 
+##CHANGELOG
 #[NEW] Analizador léxico (tokens)
 #[NEW] Analizador sintactico simple
-#[NEW] Obtenemos los tokens y los mostramos, vug resulto de salto de linea
+#[NEW] Obtenemos los tokens y los mostramos, bug resulto de salto de linea
+#[NEW] Imprimos y analizamos palabras reservadas, punto y coma, comas y letras
+#[NEW] Nuevas actividades TODO dentro del readme.md
