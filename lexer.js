@@ -38,8 +38,24 @@ export function* lexer(filename, str) {
   function operator() {
     if (chr === '+') {
       next()
-      return { type: "PlusToken" };
+      return { type: "PlusToken" }
     }
+
+    if (chr === '-') {
+      next()
+      return { type: "SubstractionToken" }
+    }
+    
+    if (chr === '*') {
+      next()
+      return { type: "MulToken" }
+    }
+
+    if (chr === '/') {
+      next()
+      return { type: "DivToken" }
+    }
+
     return null
   }
 
