@@ -19,13 +19,13 @@ Grámatica de Javascript:
   - default
   - delete
   - do
-  - //else
+  - else
   - export
   - extends
   - finally
   - for
-  - //function
-  - //if  
+  - function
+  - if  
   - import
   - in
   - instanceof
@@ -57,12 +57,12 @@ Grámatica de Javascript:
   - Binarios (Ej: 0b10000000000000000000000000000000; // 2147483648)
   - Octal (Ej: 0o755; // 493)
   - Hexadecimales (Ej: 0xA)
-- Objetos literales /*TODO*/
+- Objetos literales
   - var o = 'foo';
   - var o = {a, b, c};
-- Arreglos literales /*TODO*/
+- Arreglos literales
   - [1954, 1974, 1990, 2014]
-- Cadenas literales /*TODO*/
+- Cadenas literales
   - 'foo'
   - "bar"
 - Expresiones regulares /*TODO*/

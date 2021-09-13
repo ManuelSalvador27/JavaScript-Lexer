@@ -23,6 +23,22 @@ export function* lexer(filename, str) {
     column = 1
   }
 
+  function stringOfType(delimiter) {
+    if (chr !== delimiter) { return null }
+    next()
+    while (chr !== delimiter) {
+      next()
+    }
+
+    // Busca el ultimo delimitador para ver si es una cdena literal
+    next()     
+    return { type: "String" }
+  }
+
+  function string() {
+    return stringOfType('"') || stringOfType("'");
+  }
+
   function number() {
     let buffer = ""
     while (isNumeric(chr)) {
@@ -49,6 +65,11 @@ export function* lexer(filename, str) {
     if (chr === '*') {
       next()
       return { type: "MulToken" }
+    }
+
+    if (chr === '=') {
+      next()
+      return { type: "AllocationToken" }
     }
 
     if (chr === '/') {
@@ -166,29 +187,39 @@ export function* lexer(filename, str) {
 
     next()
 
-    return { type: "ColonToken" }
+    return { type: "CommaToken" }
   }
 
 
   function parents() {
-    if (chr === "(") {
+    if (chr === '(') {
       next()
       return { type: "OpenParent" }
     }
 
-    if (chr === ")") {
+    if (chr === ')') {
       next()
       return { type: "CloseParent" }
     }
 
-    if (chr === "{") {
+    if (chr === '{') {
       next()
       return { type: "OpenCurly" }
     }
 
-    if (chr === "}") {
+    if (chr === '}') {
       next()
       return { type: "CloseCurly" }
+    }
+
+    if (chr === '[') {
+      next()
+      return { type: "OpenBracket" }
+    }
+
+    if (chr === ']') {
+      next()
+      return { type: "CloseBracket" }
     }
 
     return null
@@ -233,6 +264,7 @@ export function* lexer(filename, str) {
     number() || 
     id() ||
     parents() || 
+    string() ||
     eol()
 
     if (token) {
