@@ -7,20 +7,20 @@ function isLetter(c) {
 }
 
 export function* lexer(filename, str) {
-  let line = 1
-  let column = 1
-  let cursor = 0
-  let chr = str[cursor]
+  let line = 1;
+  let column = 1;
+  let cursor = 0;
+  let chr = str[cursor];
 
   function next() {
-    cursor++
-    chr = str[cursor]
-    column++
+    cursor++;
+    chr = str[cursor];
+    column++;
   }
 
   function newLine() {
-    line++
-    column = 1
+    line++;
+    column = 1;
   }
 
   function stringOfType(delimiter) {
@@ -40,31 +40,35 @@ export function* lexer(filename, str) {
   }
 
   function number() {
-    let buffer = ""
+    let buffer = "";
     while (isNumeric(chr)) {
-      buffer += chr
-      next()
+      buffer += chr;
+      next();
     }
     if (buffer.length >= 1) {
-      return { type: "Numeric", buffer }
+      return { type: "Numeric", buffer };
     }
-    return null
+    return null;
   }
 
   function operator() {
-    if (chr === '+') {
-      next()
-      return { type: "PlusToken" }
+    if (chr === "=") {
+      next();
+      return { type: "EqualToken" };
+    }
+    if (chr === "+") {
+      next();
+      return { type: "PlusToken" };
     }
 
-    if (chr === '-') {
-      next()
-      return { type: "SubstractionToken" }
+    if (chr === "-") {
+      next();
+      return { type: "SubstractionToken" };
     }
-    
-    if (chr === '*') {
-      next()
-      return { type: "MulToken" }
+
+    if (chr === "*") {
+      next();
+      return { type: "MulToken" };
     }
 
     if (chr === '=') {
@@ -78,17 +82,17 @@ export function* lexer(filename, str) {
         next()
         return doubleSlash()
       }
-      return { type: "DivToken" }
+      return { type: "DivToken" };
     }
 
-    return null
+    return null;
   }
 
   function doubleSlash() {
     for (;;) {
       if (chr === "\r" || chr === "\n") {
-        newLine()
-        next()
+        newLine();
+        next();
         break;
       }
 
@@ -99,11 +103,11 @@ export function* lexer(filename, str) {
       next();
     }
 
-    return { type: "CommentToken" }
+    return { type: "CommentToken" };
   }
 
   const KEYWORDS = {
-    break:"Break",
+    break: "Break",
     case: "Case",
     catch: "Catch",
     class: "Class",
@@ -122,74 +126,87 @@ export function* lexer(filename, str) {
     if: "If",
     import: "Import",
     in: "In",
-    instanceof:"InstanceOf",
+    instanceof: "InstanceOf",
     new: "New",
     return: "Return",
     super: "Super",
     switch: "Switch",
     this: "This",
     throw: "Throw",
-    try:"Try",
+    try: "Try",
     typeof: "TypeOf",
-    var:"Var",
-    void:"Void",
-    while:"While",
-    with:"With",
-    yield:"Yield",
-    let:"Let",
-  }
+    var: "Var",
+    void: "Void",
+    while: "While",
+    with: "With",
+    yield: "Yield",
+    let: "Let",
+  };
 
   function id() {
-    let buffer = ""
+    let buffer = "";
 
-    if (!isLetter(chr)){ return null } 
-    buffer += chr
-    next()
+    if (!isLetter(chr)) {
+      return null;
+    }
+    buffer += chr;
+    next();
 
-    while (isNumeric(chr) || isLetter(chr)) {
-      buffer += chr
-      next()
+    while (isLetter(chr) || isNumeric(chr)) {
+      buffer += chr;
+      next();
     }
 
     const type = KEYWORDS[buffer];
     if (type) {
-      return { type }
+      return { type };
     }
 
-    return { type: "Id", value: buffer }
-
+    return { type: "Id", value: buffer };
   }
 
   function whiteSpace() {
     if (chr === " " || chr === "\t") {
-      next()
+      next();
     } else {
-      return null
+      return null;
     }
 
     while (chr === " " || chr === "\t") {
-      next()
+      next();
     }
 
-    return true
+    return true;
   }
 
   function semicolon() {
-    if (chr !== ";"){ return null }
+    if (chr !== ";") {
+      return null;
+    }
 
-    next()
+    next();
 
-    return { type: "SemicolonToken" }
+    return { type: "SemicolonToken" };
   }
 
   function comma() {
-    if (chr !== ",") { return null }
+    if (chr !== ",") {
+      return null;
+    }
 
-    next()
+    next();
 
-    return { type: "CommaToken" }
+    return { type: "CommaToken" };
   }
+  function colon() {
+    if (chr !== ":") {
+      return null;
+    }
 
+    next();
+
+    return { type: "ColonToken" };
+  }
 
   function parents() {
     if (chr === '(') {
@@ -225,30 +242,28 @@ export function* lexer(filename, str) {
     return null
   }
 
-
   function eol() {
-    if (chr === "\n"|| chr === "\r" ) {
-      next()
-      newLine()
+    if (chr === "\n" || chr === "\r") {
+      next();
+      newLine();
     } else {
-      return null
+      return null;
     }
 
-    while (chr === "\n"|| chr === "\r") {
-      next()
-      newLine()
+    while (chr === "\n" || chr === "\r") {
+      next();
+      newLine();
     }
 
-    return true
+    return true;
   }
 
-
   function eof() {
-    chr = str[cursor]
+    chr = str[cursor];
 
     if (chr === undefined) {
-      cursor++
-      return {type: "EOF" }
+      cursor++;
+      return { type: "EOF" };
     }
 
     return null;
@@ -275,16 +290,13 @@ export function* lexer(filename, str) {
       yield token;
 
       continue;
-    } 
+    }
 
-    const EndOfFile = eof()
-    if(EndOfFile){
+    const EndOfFile = eof();
+    if (EndOfFile) {
       break;
     }
 
-    throw new SyntaxError(
-      `Caracter no reconocido "${chr}" en ${filename}: ${line}:${column}`
-    )
-
+    throw new SyntaxError(`Caracter no reconocido "${chr}" en ${filename}: ${line}:${column}`);
   }
 }
