@@ -70,7 +70,7 @@ Grámatica de Javascript:
 - Punto y coma 
   - Opcional
   - Existente
-- Parentesis /*TODO*/
+- Parentesis
   - Curly braces
   - Parentesis
 

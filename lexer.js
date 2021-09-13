@@ -147,6 +147,31 @@ export function* lexer(filename, str) {
     return { type: "ColonToken" }
   }
 
+  function parents() {
+    if (chr === "(") {
+      next()
+      return { type: "OpenParent" }
+    }
+
+    if (chr === ")") {
+      next()
+      return { type: "CloseParent" }
+    }
+
+    if (chr === "{") {
+      next()
+      return { type: "OpenCurly" }
+    }
+
+    if (chr === "}") {
+      next()
+      return { type: "CloseCurly" }
+    }
+
+    return null
+  }
+
+
   function eol() {
     if (chr === "\n"|| chr === "\r" ) {
       next()
@@ -183,7 +208,8 @@ export function* lexer(filename, str) {
     semicolon() || 
     comma() ||
     number() || 
-    id() || 
+    id() ||
+    parents() || 
     eol()
 
     if (token) {
