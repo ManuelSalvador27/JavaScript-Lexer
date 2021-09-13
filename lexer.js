@@ -3,7 +3,8 @@ function isNumeric(c) {
 }
 
 function isLetter(c) {
-  return /^[A-Za-z]+$/.test(c);
+  console.log("Letra",c)
+  return ("a" <= c && c <= "z") || ("A" <= c && c <= "Z");
 }
 
 export function* lexer(filename, str) {
@@ -88,6 +89,25 @@ export function* lexer(filename, str) {
     return null;
   }
 
+  function regexp() {
+    if (chr === '/') {
+      next()
+      if (chr === '/') {
+        next()
+        return doubleSlash()
+      }
+      next()
+      while (chr !== "/") {
+        next()
+      }
+
+      // Buscar al final de la cadena match con '/' nuevamente 
+      next() 
+
+      return { type: "RegExpToken" }
+    }
+  }
+
   function doubleSlash() {
     for (;;) {
       if (chr === "\r" || chr === "\n") {
@@ -144,25 +164,25 @@ export function* lexer(filename, str) {
   };
 
   function id() {
-    let buffer = "";
+    let buffer = ""
 
-    if (!isLetter(chr)) {
-      return null;
-    }
-    buffer += chr;
-    next();
+    if (!isLetter(chr)) { return null }
+    buffer += chr
+    next()
 
     while (isLetter(chr) || isNumeric(chr)) {
-      buffer += chr;
-      next();
+      buffer += chr
+      next()
     }
 
-    const type = KEYWORDS[buffer];
+    const type = KEYWORDS[buffer]
     if (type) {
-      return { type };
+      return { type }
     }
 
-    return { type: "Id", value: buffer };
+    return { type: "Id", value: buffer }
+
+    return null
   }
 
   function whiteSpace() {
@@ -186,7 +206,7 @@ export function* lexer(filename, str) {
 
     next();
 
-    return { type: "SemicolonToken" };
+    return { type: "SemicolonToken" }
   }
 
   function comma() {
@@ -203,9 +223,9 @@ export function* lexer(filename, str) {
       return null;
     }
 
-    next();
+    next()
 
-    return { type: "ColonToken" };
+    return { type: "ColonToken" } 
   }
 
   function parents() {
@@ -263,7 +283,7 @@ export function* lexer(filename, str) {
 
     if (chr === undefined) {
       cursor++;
-      return { type: "EOF" };
+      return {type: 'End'}
     }
 
     return null;
@@ -274,6 +294,7 @@ export function* lexer(filename, str) {
     const token = 
     whiteSpace() || 
     operator() || 
+    regexp() ||
     semicolon() || 
     comma() ||
     number() || 

@@ -4,9 +4,9 @@ José Antonio Lome Paulino - Matricula: A01422195
 Este proyecto esta hecho en node.js v14.17.0 sin dependencias externas
 
 Grámatica de Javascript:
-- Comentarios /*TODO*/
+- Comentarios 
   - / Hola /
-  - /* Esta es un comentario largo */ 
+  - /* Esta es un comentario largo */ *TODO*
 - Comentarios hashbang /*TODO*/
   - #!/usr/bin/env node 
 - Palabras reservadas
@@ -65,7 +65,7 @@ Grámatica de Javascript:
 - Cadenas literales
   - 'foo'
   - "bar"
-- Expresiones regulares /*TODO*/
+- Expresiones regulares
   - /ab+c/g
 - Punto y coma 
   - Opcional
