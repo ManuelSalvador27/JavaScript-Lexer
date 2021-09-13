@@ -3,7 +3,6 @@ function isNumeric(c) {
 }
 
 function isLetter(c) {
-  console.log("Letra",c)
   return ("a" <= c && c <= "z") || ("A" <= c && c <= "Z");
 }
 
