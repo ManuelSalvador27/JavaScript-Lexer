@@ -1,7 +1,7 @@
-var a;
+//Hola
 
 if (manu) {
-  etc;
+  2+1;
 }
 else{ 
   break;

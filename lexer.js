@@ -53,10 +53,32 @@ export function* lexer(filename, str) {
 
     if (chr === '/') {
       next()
+      if (chr === '/') {
+        next()
+        return doubleSlash()
+      }
       return { type: "DivToken" }
     }
 
     return null
+  }
+
+  function doubleSlash() {
+    for (;;) {
+      if (chr === "\r" || chr === "\n") {
+        newLine()
+        next()
+        break;
+      }
+
+      if (chr === undefined) {
+        break;
+      }
+
+      next();
+    }
+
+    return { type: "CommentToken" }
   }
 
   const KEYWORDS = {
@@ -146,6 +168,7 @@ export function* lexer(filename, str) {
 
     return { type: "ColonToken" }
   }
+
 
   function parents() {
     if (chr === "(") {
