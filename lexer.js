@@ -24,15 +24,17 @@ export function* lexer(filename, str) {
   }
 
   function stringOfType(delimiter) {
-    if (chr !== delimiter) { return null }
-    next()
+    if (chr !== delimiter) {
+      return null;
+    }
+    next();
     while (chr !== delimiter) {
-      next()
+      next();
     }
 
     // Busca el ultimo delimitador para ver si es una cdena literal
-    next()     
-    return { type: "String" }
+    next();
+    return { type: "String" };
   }
 
   function string() {
@@ -68,19 +70,27 @@ export function* lexer(filename, str) {
 
     if (chr === "*") {
       next();
+      if (chr === "/") {
+        next();
+        return doubleSlash();
+      }
       return { type: "MulToken" };
     }
 
-    if (chr === '=') {
-      next()
-      return { type: "AllocationToken" }
+    if (chr === "=") {
+      next();
+      return { type: "AllocationToken" };
     }
 
-    if (chr === '/') {
-      next()
-      if (chr === '/') {
-        next()
-        return doubleSlash()
+    if (chr === "/") {
+      next();
+      if (chr === "*") {
+        next();
+        return endOfComment();
+      }
+      if (chr === "/") {
+        next();
+        return doubleSlash();
       }
       return { type: "DivToken" };
     }
@@ -89,21 +99,25 @@ export function* lexer(filename, str) {
   }
 
   function regexp() {
-    if (chr === '/') {
-      next()
-      if (chr === '/') {
-        next()
-        return doubleSlash()
+    if (chr === "/") {
+      next();
+      if (chr === "/") {
+        next();
+        return doubleSlash();
       }
-      next()
+      if (chr === "*") {
+        next();
+        return endOfComment();
+      }
+      next();
       while (chr !== "/") {
-        next()
+        next();
       }
 
-      // Buscar al final de la cadena match con '/' nuevamente 
-      next() 
+      // Buscar al final de la cadena match con '/' nuevamente
+      next();
 
-      return { type: "RegExpToken" }
+      return { type: "RegExpToken" };
     }
   }
 
@@ -123,6 +137,24 @@ export function* lexer(filename, str) {
     }
 
     return { type: "CommentToken" };
+  }
+
+  function endOfComment() {
+    for (;;) {
+      if (chr === "*" || chr === "/") {
+        operator();
+        next();
+        break;
+      }
+
+      if (chr === undefined) {
+        break;
+      }
+
+      next();
+    }
+
+    return { type: "LargeCommentToken" };
   }
 
   const KEYWORDS = {
@@ -160,28 +192,33 @@ export function* lexer(filename, str) {
     with: "With",
     yield: "Yield",
     let: "Let",
+    null: "Null",
+    true: "True",
+    false: "False",
   };
 
   function id() {
-    let buffer = ""
+    let buffer = "";
 
-    if (!isLetter(chr)) { return null }
-    buffer += chr
-    next()
+    if (!isLetter(chr)) {
+      return null;
+    }
+    buffer += chr;
+    next();
 
     while (isLetter(chr) || isNumeric(chr)) {
-      buffer += chr
-      next()
+      buffer += chr;
+      next();
     }
 
-    const type = KEYWORDS[buffer]
+    const type = KEYWORDS[buffer];
     if (type) {
-      return { type }
+      return { type };
     }
 
-    return { type: "Id", value: buffer }
+    return { type: "Id", value: buffer };
 
-    return null
+    return null;
   }
 
   function whiteSpace() {
@@ -205,7 +242,7 @@ export function* lexer(filename, str) {
 
     next();
 
-    return { type: "SemicolonToken" }
+    return { type: "SemicolonToken" };
   }
 
   function comma() {
@@ -222,43 +259,43 @@ export function* lexer(filename, str) {
       return null;
     }
 
-    next()
+    next();
 
-    return { type: "ColonToken" } 
+    return { type: "ColonToken" };
   }
 
   function parents() {
-    if (chr === '(') {
-      next()
-      return { type: "OpenParent" }
+    if (chr === "(") {
+      next();
+      return { type: "OpenParent" };
     }
 
-    if (chr === ')') {
-      next()
-      return { type: "CloseParent" }
+    if (chr === ")") {
+      next();
+      return { type: "CloseParent" };
     }
 
-    if (chr === '{') {
-      next()
-      return { type: "OpenCurly" }
+    if (chr === "{") {
+      next();
+      return { type: "OpenCurly" };
     }
 
-    if (chr === '}') {
-      next()
-      return { type: "CloseCurly" }
+    if (chr === "}") {
+      next();
+      return { type: "CloseCurly" };
     }
 
-    if (chr === '[') {
-      next()
-      return { type: "OpenBracket" }
+    if (chr === "[") {
+      next();
+      return { type: "OpenBracket" };
     }
 
-    if (chr === ']') {
-      next()
-      return { type: "CloseBracket" }
+    if (chr === "]") {
+      next();
+      return { type: "CloseBracket" };
     }
 
-    return null
+    return null;
   }
 
   function eol() {
@@ -282,7 +319,7 @@ export function* lexer(filename, str) {
 
     if (chr === undefined) {
       cursor++;
-      return {type: 'End'}
+      return { type: "End" };
     }
 
     return null;
@@ -290,17 +327,17 @@ export function* lexer(filename, str) {
 
   //version corta de while(true) que no requiere optimización
   for (;;) {
-    const token = 
-    whiteSpace() || 
-    operator() || 
-    regexp() ||
-    semicolon() || 
-    comma() ||
-    number() || 
-    id() ||
-    parents() || 
-    string() ||
-    eol()
+    const token =
+      whiteSpace() ||
+      operator() ||
+      regexp() ||
+      semicolon() ||
+      comma() ||
+      number() ||
+      id() ||
+      parents() ||
+      string() ||
+      eol();
 
     if (token) {
       if (token === true) {
