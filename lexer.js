@@ -195,6 +195,9 @@ export function* lexer(filename, str) {
     null: "Null",
     true: "True",
     false: "False",
+    set: "Set",
+    get: "Get",
+    arguments: "Arguments",
   };
 
   function id() {
