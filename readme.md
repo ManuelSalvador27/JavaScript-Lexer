@@ -47,7 +47,7 @@ Grámatica de Javascript:
 
 _No incluye las futuras palabras reservadas_
 
-- Identificador especiales /_TODO_/
+- Identificador especiales
   - arguments
   - get
   - set
