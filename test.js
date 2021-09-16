@@ -1,7 +1,9 @@
 #! /dev/src/holaaaa
+var b = 0e-5
+
 
 const re = /ab+c/;
-var a = {1, 2, 3};
+var a = {name:"José Lome"};
 var b = "Hola";
 /* asdkjaskldhjasd 
 askjbhskdjnf
@@ -11,9 +13,9 @@ askjbhskdjnf
   adsg
   adfg
   dfg
-
 */
 if (manu) {
   2 + 1;
 } else {
+  break;
 }
