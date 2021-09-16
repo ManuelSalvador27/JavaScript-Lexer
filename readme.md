@@ -8,7 +8,7 @@ Grámatica de Javascript:
 - Comentarios
   - / Hola /
   - /\* Esta es un comentario largo
-- Comentarios hashbang /_TODO_/
+- Comentarios hashbang
   - #!/usr/bin/env node
 - Palabras reservadas
   - break

@@ -1,5 +1,7 @@
+#! /dev/src/holaaaa
+
 const re = /ab+c/;
-var a = [1, 2, 3];
+var a = {1, 2, 3};
 var b = "Hola";
 /* asdkjaskldhjasd 
 askjbhskdjnf

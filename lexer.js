@@ -41,6 +41,36 @@ export function* lexer(filename, str) {
     return stringOfType('"') || stringOfType("'");
   }
 
+  function hashComment() {
+    for (;;) {
+      if (chr === "\r" || chr === "\n") {
+        newLine();
+        next();
+        break;
+      }
+
+      if (chr === undefined) {
+        break;
+      }
+
+      next();
+    }
+
+    return { type: "HashbangToken" };
+  }
+
+  function hashBang(){
+    if (chr === "#" && line === 1) {
+      next();
+      if (chr === "!") {
+        next();
+        return hashComment();
+      }
+    }
+
+    return null;
+  }
+
   function number() {
     let buffer = "";
     while (isNumeric(chr)) {
@@ -337,6 +367,7 @@ export function* lexer(filename, str) {
       semicolon() ||
       comma() ||
       number() ||
+      hashBang() ||
       id() ||
       parents() ||
       string() ||
